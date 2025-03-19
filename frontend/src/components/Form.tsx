@@ -1,10 +1,13 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
+import { AppContext } from "../themes/ThemedApp";
 
 type FormProps = {
   add: (content: string, name: string) => void;
 };
 
 const Form: React.FC<FormProps> = ({ add }) => {
+  const context = useContext(AppContext);
+  const mode = context?.mode || "dark";
   const contentRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement | null>(null);
 
@@ -27,7 +30,7 @@ const Form: React.FC<FormProps> = ({ add }) => {
         padding: 10,
         borderRadius: 8,
         marginBottom: 20,
-        background: "#def",
+        background: mode === "dark" ? "#555" : "#def",
       }}
     >
       <input
