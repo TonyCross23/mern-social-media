@@ -1,61 +1,40 @@
-import React, { useContext, useRef } from "react";
-import { AppContext } from "../themes/ThemedApp";
+import { Box, Button, TextField } from "@mui/material";
+import React, { useRef } from "react";
 
 type FormProps = {
-  add: (content: string, name: string) => void;
+  add: (content: string, file: string, name: string) => void;
 };
 
 const Form: React.FC<FormProps> = ({ add }) => {
-  const context = useContext(AppContext);
-  const mode = context?.mode || "dark";
   const contentRef = useRef<HTMLInputElement | null>(null);
-  const nameRef = useRef<HTMLInputElement | null>(null);
+  const fileRef = useRef<HTMLInputElement | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const content = contentRef.current?.value.trim() || "";
-    const name = nameRef.current?.value.trim() || "";
-    add(content, name);
+    const file = fileRef.current?.value.trim() || "";
+    const name = "Alice";
+    add(content, file, name);
 
     e.currentTarget.reset();
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 3,
-        padding: 10,
-        borderRadius: 8,
-        marginBottom: 20,
-        background: mode === "dark" ? "#555" : "#def",
-      }}
-    >
-      <input
-        type="text"
-        placeholder="Content"
-        style={{ padding: 5 }}
-        ref={contentRef}
-      />
-      <input
-        type="text"
-        placeholder="Name"
-        style={{ padding: 5 }}
-        ref={nameRef}
-      />
-      <button
-        type="submit"
-        style={{
-          padding: 8,
-          background: "#0d6efd",
-          color: "white",
-          border: "0 none",
-        }}
-      >
-        Post
-      </button>
+    <form onSubmit={handleSubmit}>
+      <Box sx={{ mb: 4, textAlign: "right" }}>
+        <TextField
+          inputRef={contentRef}
+          type="text"
+          placeholder="Content"
+          fullWidth
+          multiline
+          sx={{ mb: 1 }}
+        />
+        <TextField inputRef={fileRef} type="file" fullWidth sx={{ mb: 1 }} />
+        <Button variant="contained" type="submit">
+          Post
+        </Button>
+      </Box>
     </form>
   );
 };
